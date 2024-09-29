@@ -1,178 +1,143 @@
-// // Inject UI elements
-// function injectUI() {
-//     const composeBox = document.querySelector('.aoD.hl');
-//     if (composeBox) {
-//       const uploadButton = document.createElement('button');
-//       uploadButton.textContent = 'Upload CSV';
-//       uploadButton.className = 'super-email-upload-btn';
-//       uploadButton.onclick = handleCSVUpload;
-//       composeBox.appendChild(uploadButton);
-  
-//       const templateButton = document.createElement('button');
-//       templateButton.textContent = '#';
-//       templateButton.className = 'super-email-template-btn';
-//       templateButton.onclick = openTemplateSidebar;
-//       composeBox.appendChild(templateButton);
-//     }
-//   }
-  
-//   function handleCSVUpload() {
-//     const input = document.createElement('input');
-//     input.type = 'file';
-//     input.accept = '.csv';
-//     input.onchange = async (event) => {
-//       const file = event.target.files[0];
-//       const text = await file.text();
-//       const emails = parseCSV(text);
-//       fillRecipients(emails);
-//     };
-//     input.click();
-//   }
-  
-//   function parseCSV(text) {
-//     // Simple CSV parsing, you might want to use a library for more robust parsing
-//     return text.split('\n').map(line => line.split(',')[0]).filter(email => email.includes('@'));
-//   }
-  
-//   function fillRecipients(emails) {
-//     const recipientField = document.querySelector('input[name="to"]');
-//     if (recipientField) {
-//       recipientField.value = emails.join(', ');
-//     }
-//   }
-  
-//   function openTemplateSidebar() {
-//     const sidebar = document.createElement('div');
-//     sidebar.className = 'super-email-sidebar';
-//     sidebar.innerHTML = `
-//       <h2>Email Templates</h2>
-//       <ul>
-//         <li><button onclick="loadTemplate('marketing')">Marketing Email</button></li>
-//         <li><button onclick="loadTemplate('followup')">Follow-Up Email</button></li>
-//         <li><button onclick="loadTemplate('reminder')">Reminder Email</button></li>
-//         <li><button onclick="loadTemplate('welcome')">Welcome Email</button></li>
-//         <li><button onclick="loadTemplate('thankyou')">Thank You Email</button></li>
-//       </ul>
-//       <button onclick="editTemplates()">Edit Templates</button>
-//     `;
-//     document.body.appendChild(sidebar);
-//   }
-  
-//   function loadTemplate(type) {
-//     // Implement template loading logic
-//     console.log(`Loading ${type} template`);
-//   }
-  
-//   function editTemplates() {
-//     // Implement template editing logic
-//     console.log('Editing templates');
-//   }
-  
-//   // Initialize the extension
-//   injectUI();
-
-// Wait until the DOM is fully loaded
-document.addEventListener('DOMContentLoaded', function() {
-    observeComposeBox();
-});
-
-// Function to observe the DOM for the Gmail compose box
-function observeComposeBox() {
-    const observer = new MutationObserver(function(mutations, observer) {
-        // Check if compose box is loaded
-        mutations.forEach(mutation => {
-            if (mutation.addedNodes) {
-                mutation.addedNodes.forEach(node => {
-                    if (node.nodeType === 1 && node.classList.contains('aYF')) {
-                        injectUI();
-                    }
-                });
-            }
-        });
-    });
-
-    // Observe changes in the Gmail DOM
-    observer.observe(document.body, {
-        childList: true,
-        subtree: true
-    });
+function handleCSVUpload(event) {
+    console.log("CSV file selected.");
+    const file = event.target.files[0];
+    if (!file) {
+        console.log("No file selected.");
+        return;
+    }
+    console.log("File selected: ", file.name);
+    const reader = new FileReader();
+    reader.onload = function (e) {
+        const data = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(data, { type: 'array' });
+        const firstSheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[firstSheetName];
+        const sheetData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+        if (sheetData.length > 0) {
+            console.log("Name, Email:");
+            const emails = [];
+            sheetData.slice(1).forEach((row) => {
+                const name = row[0];
+                const email = row[1];
+                console.log(`Name: ${name}, Email: ${email}`);
+                emails.push(email);
+            });
+            const emailString = emails.join(', ');
+            // populateToField(emailString);
+            event.target.value = ""; // Reset input value
+        } else {
+            console.log("No data found in the sheet.");
+        }
+    };
+    reader.readAsArrayBuffer(file);
 }
 
-// Function to inject the UI elements
+function populateToField(emailString) {
+    // Try multiple selectors to find the "To" field
+    const selectors = [
+        'textarea[name="to"]',
+        'input[name="to"]',
+        'div[name="to"]',
+        'div[role="combobox"]',
+        'input[aria-label="To"]',
+        'div[aria-label="To"]'
+    ];
+
+    for (let selector of selectors) {
+        const toField = document.querySelector(selector);
+        if (toField) {
+            // If it's an input or textarea, set the value directly
+            if (toField.tagName === 'INPUT' || toField.tagName === 'TEXTAREA') {
+                toField.value = emailString;
+            } else {
+                // If it's a div, we need to trigger an input event
+                toField.textContent = emailString;
+                const event = new Event('input', { bubbles: true });
+                toField.dispatchEvent(event);
+            }
+            console.log("Emails populated in the 'To' field:", emailString);
+            return;
+        }
+    }
+
+    console.log("Could not find the 'To' field. Trying alternative method...");
+    
+    // If we still can't find the field, try to focus it and then set the value
+    const composeWindow = document.querySelector('.aWA');
+    if (composeWindow) {
+        composeWindow.click();
+        setTimeout(() => {
+            document.execCommand('insertText', false, emailString);
+            console.log("Attempted to insert emails using execCommand");
+        }, 100);
+    } else {
+        console.log("Could not find the compose window.");
+    }
+}
+
+
+
+// Define openTemplateSidebar before it's used
+function openTemplateSidebar() {
+    console.log("Template button clicked.");
+}
+
+
 function injectUI() {
-    const composeBox = document.querySelector('.aoD.hl');
-    if (composeBox) {
+    console.log("Attempting to inject UI");
+
+    // Select the toolbar that contains the Send button in the Gmail compose box
+    const toolbar = document.querySelector('.btC .gU.Up'); // The container with send options
+    if (toolbar) {
+        console.log("Toolbar found.");
+
         // Check if the upload button is already added to avoid duplicates
         if (!document.querySelector('.super-email-upload-btn')) {
+            console.log("Injecting Upload and Template buttons next to Send button.");
+
+            // Create file input for uploading Google Sheets or CSV
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = '.csv, .xlsx';
+            fileInput.className = 'super-email-upload-btn';
+            fileInput.style.marginLeft = '10px';
+            fileInput.style.display = 'none'; // Hidden, we trigger it with the button below
+
+            // Create the upload button
             const uploadButton = document.createElement('button');
             uploadButton.textContent = 'Upload CSV';
             uploadButton.className = 'super-email-upload-btn';
             uploadButton.style.marginLeft = '10px';
-            uploadButton.onclick = handleCSVUpload;
-            composeBox.appendChild(uploadButton);
+            uploadButton.onclick = () => fileInput.click(); // Trigger file input click
 
-            const templateButton = document.createElement('button');
-            templateButton.textContent = '#';
-            templateButton.className = 'super-email-template-btn';
-            templateButton.style.marginLeft = '5px';
-            templateButton.onclick = openTemplateSidebar;
-            composeBox.appendChild(templateButton);
+            // Append the file input and upload button to the toolbar
+            toolbar.appendChild(fileInput);
+            toolbar.appendChild(uploadButton);
+
+            // Handle file selection and processing
+            fileInput.onchange = handleCSVUpload;
+            
         }
+    } else {
+        console.log("Toolbar not found yet. Retrying...");
     }
 }
 
-// Function to handle CSV upload (this part is your existing code)
-function handleCSVUpload() {
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = '.csv';
-    input.onchange = async (event) => {
-        const file = event.target.files[0];
-        const text = await file.text();
-        const emails = parseCSV(text);
-        fillRecipients(emails);
-    };
-    input.click();
-}
 
-// Function to parse CSV
-function parseCSV(text) {
-    // Simple CSV parsing, you might want to use a library for more robust parsing
-    return text.split('\n').map(line => line.split(',')[0]).filter(email => email.includes('@'));
-}
+// Observe Gmail DOM changes and inject UI when appropriate
+const observer = new MutationObserver((mutations) => {
+    mutations.forEach(mutation => {
+        if (mutation.addedNodes) {
+            mutation.addedNodes.forEach(node => {
+                if (node.nodeType === 1 && node.classList.contains('nH')) { // 'nH' is a class in Gmail's compose box
+                    injectUI(); // Inject UI when compose box is added
+                }
+            });
+        }
+    });
+});
 
-// Function to fill recipients
-function fillRecipients(emails) {
-    const recipientField = document.querySelector('textarea[name="to"]');
-    if (recipientField) {
-        recipientField.value = emails.join(', ');
-    }
-}
+// Start observing the Gmail DOM
+observer.observe(document.body, { childList: true, subtree: true });
 
-// Function to open the template sidebar (this part is your existing code)
-function openTemplateSidebar() {
-    const sidebar = document.createElement('div');
-    sidebar.className = 'super-email-sidebar';
-    sidebar.innerHTML = `
-        <h2>Email Templates</h2>
-        <ul>
-            <li><button onclick="loadTemplate('marketing')">Marketing Email</button></li>
-            <li><button onclick="loadTemplate('followup')">Follow-Up Email</button></li>
-            <li><button onclick="loadTemplate('reminder')">Reminder Email</button></li>
-            <li><button onclick="loadTemplate('welcome')">Welcome Email</button></li>
-            <li><button onclick="loadTemplate('thankyou')">Thank You Email</button></li>
-        </ul>
-        <button onclick="editTemplates()">Edit Templates</button>
-    `;
-    document.body.appendChild(sidebar);
-}
-
-// Function to load template (stub for your existing functionality)
-function loadTemplate(type) {
-    console.log(`Loading ${type} template`);
-}
-
-// Function to edit templates (stub for your existing functionality)
-function editTemplates() {
-    console.log('Editing templates');
-}
+console.log("Content script loaded and MutationObserver is now watching the DOM.");
