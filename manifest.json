@@ -1,0 +1,40 @@
+{
+    "manifest_version": 3,
+    "name": "Super Email Extension",
+    "version": "1.0",
+    "description": "Enhance your Gmail experience with CSV uploads and email templates",
+    "permissions": [
+      "storage",
+      "activeTab",
+      "identity"
+    ],
+    "host_permissions": [
+      "https://mail.google.com/*",
+      "https://sheets.googleapis.com/*"
+    ],
+    "background": {
+      "service_worker": "background.js"
+    },
+    "content_scripts": [
+      {
+        "matches": ["https://mail.google.com/*"],
+        "js": ["content.js"],
+        "css": ["styles.css"]
+      }
+    ],
+    "action": {
+      "default_popup": "popup.html"
+    },
+    "icons": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon16.png",
+      "128": "icons/icon16.png"
+    },
+    "oauth2": {
+      "client_id": "644935456370-nver9m9d3valcnkfpn3gg8ja4b28ne4m.apps.googleusercontent.com",
+      "scopes": [
+        "https://www.googleapis.com/auth/gmail.compose",
+        "https://www.googleapis.com/auth/spreadsheets.readonly"
+      ]
+    }
+  }

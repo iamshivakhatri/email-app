@@ -1,0 +1,101 @@
+/* Global styles */
+:root {
+    --primary-color: #4285f4;
+    --secondary-color: #34a853;
+    --text-color: #202124;
+    --background-color: #ffffff;
+  }
+  
+  body {
+    font-family: Arial, sans-serif;
+    color: var(--text-color);
+    background-color: var(--background-color);
+  }
+  
+  /* Button styles */
+  .super-email-upload-btn,
+  .super-email-template-btn {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    margin: 0 4px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .super-email-upload-btn:hover,
+  .super-email-template-btn:hover {
+    background-color: darken(var(--primary-color), 10%);
+  }
+  
+  /* Sidebar styles */
+  .super-email-sidebar {
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 300px;
+    height: 100%;
+    background-color: var(--background-color);
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    overflow-y: auto;
+  }
+  
+  .super-email-sidebar h2 {
+    color: var(--primary-color);
+    margin-bottom: 20px;
+  }
+  
+  .super-email-sidebar ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .super-email-sidebar li {
+    margin-bottom: 10px;
+  }
+  
+  .super-email-sidebar button {
+    width: 100%;
+    padding: 10px;
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .super-email-sidebar button:hover {
+    background-color: darken(var(--secondary-color), 10%);
+  }
+  
+  /* Popup styles */
+  .popup-container {
+    width: 300px;
+    padding: 20px;
+  }
+  
+  .popup-container h1 {
+    color: var(--primary-color);
+    font-size: 18px;
+    margin-bottom: 20px;
+  }
+  
+  .popup-container button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .popup-container button:hover {
+    background-color: darken(var(--primary-color), 10%);
+  }
