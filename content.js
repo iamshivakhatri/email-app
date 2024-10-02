@@ -181,12 +181,65 @@ function injectUI() {
 
             // Handle file selection and processing
             fileInput.onchange = handleCSVUpload;
-            
+        }
+
+        // Check if the template button is already added to avoid duplicates
+        if (!document.querySelector('.super-email-template-btn')) {
+            // Create the load template button
+            const templateButton = document.createElement('button');
+            templateButton.textContent = 'Load Template';
+            templateButton.className = 'super-email-template-btn';
+            templateButton.style.marginLeft = '10px';
+            templateButton.onclick = showTemplateOptions; // Trigger the template options on click
+
+            // Append the template button to the toolbar
+            toolbar.appendChild(templateButton);
         }
     } else {
         console.log("Toolbar not found yet. Retrying...");
     }
 }
+
+// Function to handle displaying template options
+function showTemplateOptions() {
+    console.log("Loading template options...");
+    
+    // Create a simple modal or dropdown to show the templates
+    const templateOptions = [
+        'Template 1: Welcome Email',
+        'Template 2: Follow-up Email',
+        'Template 3: Newsletter'
+    ];
+
+    const dropdown = document.createElement('select');
+    dropdown.className = 'super-email-template-dropdown';
+    dropdown.style.marginLeft = '10px';
+
+    templateOptions.forEach(template => {
+        const option = document.createElement('option');
+        option.value = template;
+        option.textContent = template;
+        dropdown.appendChild(option);
+    });
+
+    // Display the dropdown and append it to the toolbar
+    document.querySelector('.super-email-template-btn').after(dropdown);
+
+    // Handle template selection
+    dropdown.onchange = () => {
+        console.log("Selected template:", dropdown.value);
+        // Here you can load the selected template into the Gmail compose area
+        // For instance, you can access the Gmail compose text area and modify its content
+    };
+}
+
+// Function to handle the CSV upload
+function handleCSVUpload(event) {
+    const file = event.target.files[0];
+    console.log("Selected file:", file.name);
+    // Implement your CSV processing logic here
+}
+
 
 
 // Observe Gmail DOM changes and inject UI when appropriate
