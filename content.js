@@ -200,7 +200,7 @@ function injectUI() {
     }
 }
 
-// Function to handle displaying template options
+// Function to handle displaying template options and injecting templates
 function showTemplateOptions() {
     console.log("Loading template options...");
     
@@ -210,6 +210,13 @@ function showTemplateOptions() {
         'Template 2: Follow-up Email',
         'Template 3: Newsletter'
     ];
+
+    // Predefined email content for each template
+    const templates = {
+        'Template 1: Welcome Email': "Hi [Name],\n\nWelcome to [Company Name]! We're excited to have you onboard.\n\nBest regards,\n[Your Name]",
+        'Template 2: Follow-up Email': "Hi [Name],\n\nJust checking in to see if you had any questions about [Product/Service].\n\nBest,\n[Your Name]",
+        'Template 3: Newsletter': "Hello,\n\nHere's the latest news and updates from [Company Name]. Don't miss out!\n\nBest regards,\n[Your Name]"
+    };
 
     const dropdown = document.createElement('select');
     dropdown.className = 'super-email-template-dropdown';
@@ -228,8 +235,19 @@ function showTemplateOptions() {
     // Handle template selection
     dropdown.onchange = () => {
         console.log("Selected template:", dropdown.value);
-        // Here you can load the selected template into the Gmail compose area
-        // For instance, you can access the Gmail compose text area and modify its content
+        
+        // Find the Gmail compose text area and inject the selected template content
+        const composeArea = document.querySelector('div[aria-label="Message Body"]');
+        
+        if (composeArea) {
+            console.log("Gmail compose area found.");
+            const selectedTemplate = templates[dropdown.value];
+            
+            // Set the selected template content in the Gmail compose box
+            composeArea.innerHTML = selectedTemplate.replace(/\n/g, '<br>'); // Convert newlines to <br> for HTML compatibility
+        } else {
+            console.log("Gmail compose area not found.");
+        }
     };
 }
 
