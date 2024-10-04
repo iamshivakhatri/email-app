@@ -1,0 +1,42 @@
+# Super Email Extension - Rules and Guidelines
+
+## 1. Project Structure
+- The project is organized with the following files:
+  - manifest.json: Defines permissions and settings.
+  - background.js: Handles background processes, including Google API interactions.
+  - content.js: Manages UI components and interactions within Gmail.
+  - popup.html, popup.js: Optional UI for additional settings or features.
+  - styles.css: Handles any CSS styling for the UI elements.
+
+## 2. Permissions
+- Ensure that the extension requests necessary permissions, including access to Gmail, Google Sheets, and storage.
+- Use OAuth2 for Google API interactions, storing tokens securely.
+
+## 3. UI Elements
+- Inject a button next to the Gmail recipients' field for CSV upload.
+- Ensure the button triggers an input box allowing users to upload CSV/Google Sheets or drag-and-drop files.
+- Parse uploaded files to extract email addresses and names, then autofill the recipient field.
+
+## 4. Template Management
+- On pressing #, open a sidebar with five pre-defined templates:
+  - Marketing Email
+  - Follow-Up Email
+  - Reminder Email
+  - Welcome Email
+  - Thank You Email
+- Allow users to select and edit these templates.- Include an edit button on the template selection box for editing the templates. On clicking the template, the template email should load on the gmail body.
+## 5. Error Handling
+- Implement error handling for CSV/Google Sheets parsing and API calls.
+- Ensure that users are notified of errors through UI prompts.
+
+## 6. Testing
+- Perform thorough testing in various environments (e.g., different browsers, Gmail accounts).
+- Validate the extension's functionality with real CSV files and Gmail accounts.
+
+## 7. Deployment
+- Package the extension following Chrome Web Store guidelines.
+- Document the deployment process, including versioning and update management.
+
+## 8. Feedback and Iteration
+- Encourage users to provide feedback through a built-in feedback mechanism.
+- Prioritize feedback for iteration and feature enhancement.

@@ -1,0 +1,353 @@
+/* Modern and minimal styles for the extension */
+.super-email-btn {
+  background-color: #4285f4 !important;
+  color: white !important;
+  border: none !important;
+  padding: 8px 16px !important;
+  border-radius: 4px !important;
+  font-family: 'Google Sans', sans-serif !important;
+  font-size: 14px !important;
+  cursor: pointer !important;
+  transition: background-color 0.3s ease !important;
+  margin-right: 10px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+}
+
+.super-email-btn:hover {
+  background-color: #3367d6 !important;
+}
+
+.super-email-btn svg {
+  margin-right: 8px;
+}
+
+.super-email-sidebar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 300px;
+  height: 100%;
+  background: white;
+  border-left: 1px solid #e0e0e0;
+  padding: 20px;
+  box-shadow: -2px 0 5px rgba(0,0,0,0.1);
+  z-index: 9999;
+  font-family: 'Google Sans', sans-serif;
+  overflow-y: auto;
+  transition: transform 0.3s ease;
+}
+
+.super-email-sidebar h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #4285f4;
+  font-size: 24px;
+}
+
+.template-list {
+  display: grid;
+  gap: 15px;
+}
+
+.template-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f1f3f4;
+  border-radius: 4px;
+  padding: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.template-item:hover {
+  background-color: #e8eaed;
+}
+
+.template-item button {
+  padding: 8px 12px;
+  font-size: 14px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.select-template {
+  background-color: #4285f4;
+  color: white;
+  flex-grow: 1;
+  text-align: left;
+  margin-right: 10px;
+}
+
+.select-template:hover {
+  background-color: #3367d6;
+}
+
+.edit-template {
+  background-color: transparent;
+  color: #5f6368;
+  padding: 4px !important;
+}
+
+.edit-template:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Drag and drop styles */
+.drag-over {
+  background-color: #e8f0fe !important;
+  border: 2px dashed #4285f4 !important;
+}
+
+/* Notification styles */
+.super-email-notification {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 10px 20px;
+  border-radius: 4px;
+  font-family: 'Google Sans', sans-serif;
+  font-size: 14px;
+  color: white;
+  z-index: 10000;
+  animation: fadeInOut 5s ease-in-out;
+}
+
+.super-email-notification.info {
+  background-color: #4285f4;
+}
+
+.super-email-notification.error {
+  background-color: #ea4335;
+}
+
+@keyframes fadeInOut {
+  0%, 100% { opacity: 0; }
+  10%, 90% { opacity: 1; }
+}
+
+/* Styles for injected UI elements */
+.super-email-upload-btn {
+  background-color: #4285f4;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-left: 10px;
+}
+
+.super-email-upload-btn:hover {
+  background-color: #3367d6;
+}
+
+.super-email-sidebar {
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 300px;
+  height: 100%;
+  background-color: white;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  z-index: 9999;
+}
+
+.super-email-sidebar h2 {
+  margin-top: 0;
+}
+
+.super-email-sidebar ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.super-email-sidebar li {
+  cursor: pointer;
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.super-email-sidebar li:hover {
+  background-color: #f5f5f5;
+}
+
+.super-email-error {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #f44336;
+  color: white;
+  padding: 15px;
+  border-radius: 4px;
+  z-index: 10000;
+}
+
+/* Styles for popup */
+.popup-container {
+  width: 300px;
+  padding: 20px;
+}
+
+.popup-container h1 {
+  font-size: 18px;
+  margin-top: 0;
+}
+
+.popup-container button {
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: #4285f4;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.popup-container button:hover {
+  background-color: #3367d6;
+}
+
+#feedback {
+  margin-top: 20px;
+}
+
+#feedback h2 {
+  font-size: 16px;
+}
+
+#feedback-text {
+  width: 100%;
+  height: 100px;
+  margin-bottom: 10px;
+  padding: 5px;
+}
+
+/* Styles for the recipient button */
+#superEmailRecipientButton {
+  background-color: #4285f4;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-left: 10px;
+}
+
+#superEmailRecipientButton:hover {
+  background-color: #3367d6;
+}
+
+/* Styles for the template sidebar */
+#superEmailTemplateSidebar {
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 250px;
+  height: 100%;
+  background-color: white;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  z-index: 9999;
+  overflow-y: auto;
+}
+
+#superEmailTemplateSidebar h2 {
+  margin-top: 0;
+}
+
+#superEmailTemplateSidebar button {
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: #4285f4;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#superEmailTemplateSidebar button:hover {
+  background-color: #3367d6;
+}
+
+#editTemplatesButton {
+  margin-top: 20px;
+}
+
+#superEmailTemplatePopup {
+  position: absolute;
+  width: 250px;
+  background-color: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  z-index: 9999;
+  font-family: Arial, sans-serif;
+  max-height: 80vh; /* 80% of the viewport height */
+  overflow-y: auto; /* Allow scrolling if content exceeds max-height */
+}
+
+#templatePopupHeader {
+  background-color: #4285f4;
+  color: white;
+  padding: 10px;
+  font-weight: bold;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  cursor: move;
+}
+
+#closeTemplatePopup {
+  float: right;
+  cursor: pointer;
+}
+
+#templateList {
+  padding: 10px;
+}
+
+#templateList button {
+  display: block;
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 5px;
+  background-color: #f1f3f4;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: left;
+}
+
+#templateList button:hover {
+  background-color: #e8eaed;
+}
+
+/* Styles for the custom send button */
+.superEmailCustomButton {
+  background-color: #1a73e8;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 15px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-left: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 36px;
+  min-width: 100px;
+  transition: background-color 0.2s;
+}
+
+.superEmailCustomButton:hover {
+  background-color: #185abc;
+}
