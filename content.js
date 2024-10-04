@@ -9,6 +9,8 @@ let templates = JSON.parse(localStorage.getItem('emailTemplates')) || [
   { name: 'Thank You Email', content: 'Dear [Firstname],\n\nThank you for your recent...' }
 ];
 
+let recipients = [];
+let selectedTemplate = null;
 // Initialize the extension
 function initializeExtension() {
   if (window.location.hostname === 'mail.google.com') {
@@ -144,7 +146,8 @@ function waitForRecipientField(maxAttempts = 10, interval = 500) {
 }
 
 // Populate recipients in Gmail compose window
-function populateRecipients(recipients) {
+function populateRecipients(newRecipients) {
+    recipients = newRecipients;
   waitForRecipientField()
     .then(toField => {
       const recipientString = recipients.map(r => r.name ? `${r.name} <${r.email}>` : r.email).join(', ');
@@ -269,22 +272,24 @@ function showTemplatePopup(target) {
 }
 
 // Load selected template into Gmail compose window
+// Modify the loadTemplate function
 function loadTemplate(index) {
-  const bodyField = document.querySelector('div[role="textbox"][aria-label="Message Body"]');
-  if (bodyField) {
-    const content = bodyField.textContent;
-    const lastHashIndex = content.lastIndexOf('#');
-    if (lastHashIndex !== -1) {
-      const newContent = content.slice(0, lastHashIndex) + templates[index].content;
-      bodyField.textContent = newContent;
+    selectedTemplate = templates[index];
+    const bodyField = document.querySelector('div[role="textbox"][aria-label="Message Body"]');
+    if (bodyField) {
+      const content = bodyField.textContent;
+      const lastHashIndex = content.lastIndexOf('#');
+      if (lastHashIndex !== -1) {
+        const newContent = content.slice(0, lastHashIndex) + selectedTemplate.content;
+        bodyField.textContent = newContent;
+      } else {
+        bodyField.textContent += selectedTemplate.content;
+      }
+      templatePopup.style.display = 'none';
     } else {
-      bodyField.textContent += templates[index].content;
+      showNotification('Error: Could not find the email body field.', true);
     }
-    templatePopup.style.display = 'none';
-  } else {
-    showNotification('Error: Could not find the email body field.', true);
   }
-}
 
 // Setup drag and drop functionality
 function setupDragAndDrop() {
